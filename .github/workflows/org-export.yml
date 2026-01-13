@@ -37,7 +37,6 @@ jobs:
                 org-html-head-include-default-style nil
                 org-html-link-home "/"
                 org-html-preamble t
-                ;; org-html-head "<style>body {max-width: 40rem; margin: 0 auto;}</style>")
 
           (setq org-publish-project-alist
                 '(("legal"
