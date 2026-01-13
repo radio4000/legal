@@ -34,9 +34,10 @@ jobs:
           (require 'ox-publish)
 
           (setq org-html-validation-link nil
+                org-html-head-include-default-style nil
                 org-html-link-home "/"
-                org-html-link-up "/"
-                org-html-preamble t)
+                org-html-preamble t
+                ;; org-html-head "<style>body {max-width: 40rem; margin: 0 auto;}</style>")
 
           (setq org-publish-project-alist
                 '(("legal"
