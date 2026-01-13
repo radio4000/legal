@@ -23,7 +23,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      HUGO_VERSION: 0.146.0
+      HUGO_VERSION: 0.139.0
     steps:
       - name: Install Hugo CLI
         run: |
@@ -37,10 +37,54 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
-      - name: Download theme
+      - name: Setup Hugo structure
         run: |
-          mkdir -p themes
-          git clone https://github.com/vaga/hugo-theme-m10c themes/m10c --depth=1
+          # Create Hugo config
+          cat > hugo.toml << 'EOF'
+          baseURL = 'https://legal.radio4000.com/'
+          title = 'Radio4000 Legal'
+          EOF
+
+          # Create layouts
+          mkdir -p layouts/_default
+
+          cat > layouts/_default/baseof.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>{{ if .Title }}{{ .Title }} - {{ end }}{{ .Site.Title }}</title>
+            <style>
+              body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+              a { color: #0366d6; }
+            </style>
+          </head>
+          <body>
+            {{ block "main" . }}{{ end }}
+          </body>
+          </html>
+          EOF
+
+          cat > layouts/_default/single.html << 'EOF'
+          {{ define "main" }}
+          <h1>{{ .Title }}</h1>
+          {{ .Content }}
+          {{ end }}
+          EOF
+
+          cat > layouts/index.html << 'EOF'
+          {{ define "main" }}
+          <h1>{{ .Site.Title }}</h1>
+          {{ .Content }}
+          {{ end }}
+          EOF
+
+          # Copy markdown files to content
+          mkdir -p content
+          cp README.md content/_index.md
+          cp privacy-policy.md content/
+          cp terms-of-service.md content/
       - name: Build with Hugo
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
@@ -49,10 +93,7 @@ jobs:
           hugo \
             --gc \
             --minify \
-            --baseURL "${{ steps.pages.outputs.base_url }}/" \
-            --contentDir . \
-            --theme m10c \
-            --disableKinds taxonomy,term
+            --baseURL "${{ steps.pages.outputs.base_url }}/"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
