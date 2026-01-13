@@ -1,5 +1,5 @@
 #+TITLE: Radio4000 Legal
 
-Public legal documents for [[https://github.com/radio4000][radio4000]]:
+Public legal documents for [[https://radio4000.com][radio4000]] ([[https://github.com/radio4000][source code]]) are:
 - [[file:privacy-policy.org][Privacy Policy]]
 - [[file:terms-of-service.org][Terms of Service]]
