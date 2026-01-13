@@ -36,7 +36,7 @@ jobs:
           (setq org-html-validation-link nil
                 org-html-head-include-default-style nil
                 org-html-link-home "/"
-                org-html-preamble t
+                org-html-preamble t)
 
           (setq org-publish-project-alist
                 '(("legal"
