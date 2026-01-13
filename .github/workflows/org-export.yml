@@ -30,11 +30,9 @@ jobs:
 
       - name: Export Org files to HTML
         run: |
-          mkdir -p _site
+          cat > publish.el << 'EOF'
+          (require 'ox-publish)
 
-          # Create export script
-          cat > export.el << 'EOF'
-          (require 'ox-html)
           (setq org-html-validation-link nil
                 org-html-postamble nil
                 org-html-head-include-default-style nil
@@ -44,23 +42,20 @@ jobs:
                   a:hover { text-decoration: underline; }
                 </style>")
 
-          ;; Export README.org to index.html
-          (find-file "README.org")
-          (org-html-export-to-html)
-          (rename-file "README.html" "_site/index.html" t)
+          (setq org-publish-project-alist
+                '(("legal"
+                   :base-directory "."
+                   :publishing-directory "./_site"
+                   :publishing-function org-html-publish-to-html
+                   :recursive t)))
 
-          ;; Export privacy-policy.org
-          (find-file "privacy-policy.org")
-          (org-html-export-to-html)
-          (rename-file "privacy-policy.html" "_site/privacy-policy.html" t)
-
-          ;; Export terms-of-service.org
-          (find-file "terms-of-service.org")
-          (org-html-export-to-html)
-          (rename-file "terms-of-service.html" "_site/terms-of-service.html" t)
+          (org-publish-all t)
           EOF
 
-          emacs --batch --load export.el
+          emacs --batch --load publish.el --kill
+
+          # Rename README.html to index.html
+          mv _site/README.html _site/index.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
