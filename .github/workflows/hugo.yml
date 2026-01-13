@@ -37,6 +37,10 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
+      - name: Download theme
+        run: |
+          mkdir -p themes
+          git clone https://github.com/adityatelange/hugo-PaperMod themes/PaperMod --depth=1
       - name: Build with Hugo
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
@@ -47,7 +51,7 @@ jobs:
             --minify \
             --baseURL "${{ steps.pages.outputs.base_url }}/" \
             --contentDir . \
-            --theme github.com/theNewDynamic/gohugo-theme-ananke \
+            --theme PaperMod \
             --disableKinds taxonomy,term
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
