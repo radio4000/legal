@@ -33,7 +33,10 @@ jobs:
           cat > publish.el << 'EOF'
           (require 'ox-publish)
 
-          (setq org-html-validation-link nil)
+          (setq org-html-validation-link nil
+                org-html-link-home "/"
+                org-html-link-up "/"
+                org-html-preamble t)
 
           (setq org-publish-project-alist
                 '(("legal"
