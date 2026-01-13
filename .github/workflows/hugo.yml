@@ -40,8 +40,7 @@ jobs:
       - name: Download theme
         run: |
           mkdir -p themes
-          git clone https://github.com/alex-shpak/hugo-book themes/hugo-book --depth=1
-          rm -rf themes/hugo-book/archetypes
+          git clone https://github.com/vaga/hugo-theme-m10c themes/m10c --depth=1
       - name: Build with Hugo
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
@@ -52,7 +51,7 @@ jobs:
             --minify \
             --baseURL "${{ steps.pages.outputs.base_url }}/" \
             --contentDir . \
-            --theme hugo-book \
+            --theme m10c \
             --disableKinds taxonomy,term
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
