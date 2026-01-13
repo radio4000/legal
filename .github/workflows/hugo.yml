@@ -41,6 +41,7 @@ jobs:
         run: |
           mkdir -p themes
           git clone https://github.com/alex-shpak/hugo-book themes/hugo-book --depth=1
+          rm -rf themes/hugo-book/archetypes
       - name: Build with Hugo
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
